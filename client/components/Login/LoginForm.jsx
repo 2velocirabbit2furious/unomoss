@@ -9,18 +9,18 @@ import { Redirect } from 'react-router-dom';
 const LoginForm = (prop) => {
   const [redirect, setRedirect] = useState('');
   const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = async (data) => {
-    console.log(data);
-    const logIn = await fetch('/api/auth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    console.log(logIn);
-    setRedirect(<Redirect to="/greenhouse" />);
-  }
+  // const onSubmit = async (data) => {
+  //   console.log(data);
+  //   const logIn = await fetch('/api/auth', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(data)
+  //   });
+  //   console.log(logIn);
+  //   setRedirect(<Redirect to="/greenhouse" />);
+  // }
 
   const signUp = () => {
     setRedirect(<Redirect to="/signup" />);

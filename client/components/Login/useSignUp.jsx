@@ -37,6 +37,7 @@ const useSignUp = (validate) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setErrors(validate(vals));
     fetch('api/user', {
       method: 'POST',
       headers: {
@@ -44,7 +45,7 @@ const useSignUp = (validate) => {
       },
       body: JSON.stringify(vals),
     });
-    history.push('/greenhouse');
+    if (!errors.err) history.push('/greenhouse');
     // try {
     //   const data = await fetch('/signup', {
     //     method: 'POST',

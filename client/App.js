@@ -31,15 +31,13 @@ const App = () => {
                 <Link to="/profile">My Profile</Link>
               </li>
               <li>
-                <Link to="/login">Login Page</Link>
-              </li>
-              <li>
                 <Link to="/plant">Plant Page</Link>
               </li>
               <li>
                 <Link to="/search">SEARCH</Link>
               </li>
             </ul>
+            <AuthButton>Sign Out</AuthButton>
           </nav>
 
           <Switch>
@@ -50,7 +48,7 @@ const App = () => {
             <Route path="/search">
               <SearchPlant />
             </Route>
-            <PrivateRoute path="/greenhouse">
+            <PrivateRoute path={["/greenhouse", "/login"]}>
               <Greenhouse />
             </PrivateRoute>
             <Route path="/signup">
@@ -80,6 +78,19 @@ function ProvideAuth({ children }) {
 const fakeAuth = {
   isAuthenticated: false,
   signin(cb) {
+    // const onSubmit = async (data) => {
+    //   console.log(data);
+    //   const logIn = await fetch('/api/auth', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data)
+    //   });
+    //   console.log(logIn);
+    //   setRedirect(<Redirect to="/greenhouse" />);
+    // }
+
     fakeAuth.isAuthenticated = true;
     setTimeout(cb, 100); // fake async
   },
@@ -117,6 +128,26 @@ function useProvideAuth() {
   };
 }
 
+function AuthButton() {
+  let history = useHistory();
+  let auth = useAuth();
+
+  return auth.user ? (
+    <p>
+      Welcome!{" "}
+      <button
+        onClick={() => {
+          auth.signout(() => history.push("/"));
+        }}
+      >
+        Sign out
+      </button>
+    </p>
+  ) : (
+      <p>You are not logged in.</p>
+    );
+}
+
 function PrivateRoute({ children }) {
   let auth = useAuth();
   return (
@@ -145,6 +176,7 @@ function LoginPage() {
   let { from } = location.state || { from: { pathname: "/" } };
   let login = event => {
     event.preventDefault();
+    console.log(event.target);
     auth.signin(() => {
       history.replace(from);
     });
