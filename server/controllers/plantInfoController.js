@@ -4,12 +4,12 @@ const db = require('../models/index');
 
 const plantInfoController = {};
 
-//Create plant Info by bringing in information from the API and putting it into the 
+//Create plant Info by bringing in information from the API and putting it into the
 plantInfoController.createPlant = async (req, res, next) => {
-  console.log('creating plant info');
+  console.log('creating plant info', req.body);
 
   const createPlantInfos = await db.PlantInfo.create({
-    commonName: req.body.common_name,
+    commonName: req.body.commonName,
     slug: req.body.slug,
     scientificName: req.body.scientificName,
     year: req.body.year,
@@ -43,7 +43,7 @@ plantInfoController.createPlant = async (req, res, next) => {
     growthMonths: req.body.growthMonths,
     bloomMonths: req.body.bloomMonths,
     fruitMonths: req.body.fruitMonths,
-  })
+  });
   if (!createPlantInfos) {
     return next({ message: 'Unable to create plant table.' });
   }
@@ -54,14 +54,13 @@ plantInfoController.createPlant = async (req, res, next) => {
 plantInfoController.getPlantInfo = async (req, res, next) => {
   console.log('get user plant info');
   const findAllPlants = await PlantInfo.findAll({
-    where: {plantId: req.body.plantId}
-  })
+    where: { plantId: req.body.plantId },
+  });
   if (findAllPlants.length === 0) {
     return next({ message: 'No plant information found' });
   }
   res.locals.findAllPlants = findAllPlants;
   return next();
 };
-
 
 module.exports = plantInfoController;

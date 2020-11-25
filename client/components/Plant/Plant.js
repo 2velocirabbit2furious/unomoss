@@ -6,9 +6,10 @@ const Plant = (props) => {
   console.log('This is props', props);
   // state will be plant details
   // need to import plant img url somehow
+  const { common_name, scientific_name, image_url } = props.location.userPlant;
   const [details, setDetails] = useState({
-    commonName: props.location.userPlant.common_name,
-    scientificName: props.location.userPlant.scientific_name,
+    commonName: common_name,
+    scientificName: scientific_name,
     flowerColor: '',
     avgHeight: '',
     light: '',
@@ -54,16 +55,16 @@ const Plant = (props) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(plant),
+      body: JSON.stringify(details),
     });
   };
 
   return (
-    <div id="outerDiv2">
-      <div id="innerDiv2">
-        <img src="https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png" />
+    <div id='outerDiv2'>
+      <div id='innerDiv2'>
+        <img src={image_url} />
       </div>
-      <div id="innerDiv2">
+      <div id='innerDiv2'>
         Common Name: {commonName}
         <br></br>
         Scientific Name: {scientificName}
@@ -87,7 +88,7 @@ const Plant = (props) => {
         Bloom Months: {bloomMonths}
         <br></br>
       </div>
-      <button id="savePlant" onClick={savePlantHandler}>
+      <button id='savePlant' onClick={savePlantHandler}>
         Save Plant
       </button>
     </div>

@@ -81,5 +81,5 @@ router.post('/plantInfo', plantInfoController.createPlant, (req, res) => {
 
 module.exports = router;
 
-// // get plant information based on plant it's tied to
+// get plant information based on plant it's tied to
 // plantInfoController.getPlantInfo = (req, res, next) => {
