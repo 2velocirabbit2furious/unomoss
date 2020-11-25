@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-filename-extension */
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import React, { useContext, createContext, useState } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 
-import Login from './components/Login/Login';
+// import Login from './components/Login/Login';
+import LoginForm from './components/Login/LoginForm.jsx';
 import Plant from './components/Plant/Plant';
 import Profile from './components/Profile/Profile';
 import Greenhouse from './components/Greenhouse/Greenhouse';
@@ -15,52 +16,176 @@ import './styles/index.scss';
 
 const App = () => {
   return (
-    <Router>
-      <div className="">
-        <nav>
-          <div className="logo-container">
-            <img src={logo} />
-          </div>
-          <ul>
-            <li>
-              <Link to="/greenhouse">My Greenhouse</Link>
-            </li>
-            <li>
-              <Link to="/profile">My Profile</Link>
-            </li>
-            <li>
-              <Link to="/login">Login Page</Link>
-            </li>
-            <li>
-              <Link to="/plant">Plant Page</Link>
-            </li>
-            <li>
-              <Link to="/search">SEARCH</Link>
-            </li>
-          </ul>
-        </nav>
+    <ProvideAuth>
+      <Router>
+        <div className="">
+          <nav>
+            <div className="logo-container">
+              <img src={logo} />
+            </div>
+            <ul>
+              <li>
+                <Link to="/greenhouse">My Greenhouse</Link>
+              </li>
+              <li>
+                <Link to="/profile">My Profile</Link>
+              </li>
+              <li>
+                <Link to="/plant">Plant Page</Link>
+              </li>
+              <li>
+                <Link to="/search">SEARCH</Link>
+              </li>
+            </ul>
+            <AuthButton>Sign Out</AuthButton>
+          </nav>
 
-        <Switch>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/plant" render={(props) => <Plant {...props} />} />
-          <Route path="/search">
-            <SearchPlant />
-          </Route>
-          <Route path="/greenhouse">
-            <Greenhouse />
-          </Route>
-          <Route path="/signup">
-            <SignupForm />
-          </Route>
-          <Route path="/">
-            <Login />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+          <Switch>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route path="/plant" render={(props) => <Plant {...props} />} />
+            <Route path="/search">
+              <SearchPlant />
+            </Route>
+            <PrivateRoute path={["/greenhouse", "/login"]}>
+              <Greenhouse />
+            </PrivateRoute>
+            <Route path="/signup">
+              <SignupForm />
+            </Route>
+            <Route path="/">
+              <LoginPage />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </ProvideAuth>
   );
 };
+
+const authContext = createContext();
+
+function ProvideAuth({ children }) {
+  const auth = useProvideAuth();
+  return (
+    <authContext.Provider value={auth}>
+      {children}
+    </authContext.Provider>
+  );
+}
+
+const fakeAuth = {
+  isAuthenticated: false,
+  signin(cb) {
+    // const onSubmit = async (data) => {
+    //   console.log(data);
+    //   const logIn = await fetch('/api/auth', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data)
+    //   });
+    //   console.log(logIn);
+    //   setRedirect(<Redirect to="/greenhouse" />);
+    // }
+
+    fakeAuth.isAuthenticated = true;
+    setTimeout(cb, 100); // fake async
+  },
+  signout(cb) {
+    fakeAuth.isAuthenticated = false;
+    setTimeout(cb, 100);
+  }
+};
+
+function useAuth() {
+  return useContext(authContext);
+}
+
+function useProvideAuth() {
+  const [user, setUser] = useState(null);
+
+  const signin = cb => {
+    return fakeAuth.signin(() => {
+      setUser("user");
+      cb();
+    });
+  };
+
+  const signout = cb => {
+    return fakeAuth.signout(() => {
+      setUser(null);
+      cb();
+    });
+  };
+
+  return {
+    user,
+    signin,
+    signout
+  };
+}
+
+function AuthButton() {
+  let history = useHistory();
+  let auth = useAuth();
+
+  return auth.user ? (
+    <p>
+      Welcome!{" "}
+      <button
+        onClick={() => {
+          auth.signout(() => history.push("/"));
+        }}
+      >
+        Sign out
+      </button>
+    </p>
+  ) : (
+      <p>You are not logged in.</p>
+    );
+}
+
+function PrivateRoute({ children }) {
+  let auth = useAuth();
+  return (
+    <Route
+      render={({ location }) =>
+        auth.user ? (
+          children
+        ) : (
+            <Redirect
+              to={{
+                pathname: "/",
+                state: { from: location }
+              }}
+            />
+          )
+      }
+    />
+  );
+}
+
+function LoginPage() {
+  let history = useHistory();
+  let location = useLocation();
+  let auth = useAuth();
+
+  let { from } = location.state || { from: { pathname: "/" } };
+  let login = event => {
+    event.preventDefault();
+    console.log(event.target);
+    auth.signin(() => {
+      history.replace(from);
+    });
+  };
+
+  return (
+    <LoginForm login={login} />
+  );
+}
+
 
 export default App;
