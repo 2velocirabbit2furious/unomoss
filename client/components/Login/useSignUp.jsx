@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,8 +7,9 @@ import {
   useHistory,
 } from 'react-router-dom';
 
-// Built custom useForm (useSignUp) hook to handle the user registration for my own practice and understanding of hooks and how the useState and useForm work
-const useSignUp = (validate) => {
+
+// Built custom useForm (useSignUp) hook to handle the user registration for my own practice and understanding of hooks and how the useState and useForm work 
+const useSignUp = validate => {
   //Here we set up our values, and the function to update the state values
   // first param initializes default state, second param function that updates state values
   const [vals, setVals] = useState({
@@ -26,7 +27,7 @@ const useSignUp = (validate) => {
   // create function that will grab the changes of the inputs
   const handleChange = (event) => {
     // destructure
-    const { name, value } = event.target;
+    const {name, value} = event.target;
     // we use the spread operator so we don't override the rest of the values in the state object when name value updates
     setVals({
       ...vals,
@@ -37,6 +38,7 @@ const useSignUp = (validate) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setErrors(validate(vals));
     fetch('api/user', {
       method: 'POST',
       headers: {
@@ -44,7 +46,8 @@ const useSignUp = (validate) => {
       },
       body: JSON.stringify(vals),
     });
-    history.push('/greenhouse');
+    if(!errors.err) history.push('/greenhouse');
+
     // try {
     //   const data = await fetch('/signup', {
     //     method: 'POST',

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-filename-extension */
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 // import {useForm} from 'react-hook-form';
 import {
   BrowserRouter as Redirect,
@@ -17,7 +17,7 @@ import validate from './validateInfo.js';
 
 const SignupForm = () => {
   // We must pass in the values(state) and functions we returned from our useSignUp hook function
-  const { handleChange, vals, handleSubmit, errors, history } = useSignUp(
+  const {handleChange, vals, handleSubmit, errors, history} = useSignUp(
     validate
   );
   // const {register, handleSubmit, watch, errors} = useForm();
@@ -46,10 +46,10 @@ const SignupForm = () => {
             name='firstName'
             value={vals.firstName}
             onChange={handleChange}
-            //ref={register}
-            //required
+          //ref={register}
+          //required
           />
-          {errors.firstName && <p>{errors.firstName}</p>}
+          {errors.firstName && <p className='req'>{errors.firstName}</p>}
           <br></br>
           <br></br>
           <label htmlFor='lastName'>Last Name:&nbsp;&nbsp;&nbsp;</label>
@@ -59,10 +59,10 @@ const SignupForm = () => {
             name='lastName'
             value={vals.lastName}
             onChange={handleChange}
-            //ref={register}
-            // required
+          //ref={register}
+          // required
           />
-          {errors.lastName && <p>{errors.lastName}</p>}
+          {errors.lastName && <p className='req'>{errors.lastName}</p>}
           <br></br>
           <br></br>
           <label htmlFor='zipCode'>
@@ -74,10 +74,10 @@ const SignupForm = () => {
             name='zipCode'
             value={vals.zipCode}
             onChange={handleChange}
-            //ref={register}
-            // required
+          //ref={register}
+          // required
           />
-          {errors.zipCode && <p>{errors.zipCode}</p>}
+          {errors.zipCode && <p className='req'>{errors.zipCode}</p>}
           <br></br>
           <br></br>
           <label htmlFor='email'>
@@ -89,10 +89,10 @@ const SignupForm = () => {
             name='email'
             value={vals.email}
             onChange={handleChange}
-            //ref={register}
-            //required
+          //ref={register}
+          //required
           />
-          {errors.email && <p>{errors.email}</p>}
+          {errors.email && <p className='req'>{errors.email}</p>}
           <br></br>
           <br></br>
           <label htmlFor='username'>User Name:&nbsp;&nbsp;&nbsp;</label>
@@ -102,10 +102,10 @@ const SignupForm = () => {
             name='username'
             value={vals.username}
             onChange={handleChange}
-            //ref={register}
-            //required
+          //ref={register}
+          //required
           />
-          {errors.username && <p>{errors.username}</p>}
+          {errors.username && <p className='req'>{errors.username}</p>}
           <br></br>
           <br></br>
           <label htmlFor='password'>
@@ -117,10 +117,10 @@ const SignupForm = () => {
             name='password'
             value={vals.password}
             onChange={handleChange}
-            //ref={register}
-            //required
+          //ref={register}
+          //required
           />
-          {errors.password && <p>{errors.password}</p>}
+          {errors.password && <p className='req'>{errors.password}</p>}
           {/* Added confirm password */}
           <br></br>
           <br></br>
@@ -131,10 +131,10 @@ const SignupForm = () => {
             name='password2'
             value={vals.password2}
             onChange={handleChange}
-            //ref={register}
-            //required
+          //ref={register}
+          //required
           />
-          {errors.password2 && <p>{errors.password2}</p>}
+          {errors.password2 && <p className='req'>{errors.password2}</p>}
           <br></br>
           <br></br>
           &nbsp;&nbsp;&nbsp;
@@ -144,12 +144,14 @@ const SignupForm = () => {
           </button>
           <br></br>
           <br></br>
-          {/* Added redirect to login hyperlink */}
+          <br></br>
+          <div>{/* Added redirect to login hyperlink */}
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <span className='form-input-login'>
-            {/* Need to add redirect url */}
+              {/* Need to add redirect url */}
             Already own an greenhouse? <Link to='/login'>Login</Link>
-          </span>
+            </span>
+          </div>
         </form>
       </div>
       <div>&nbsp;</div>

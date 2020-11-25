@@ -13,7 +13,10 @@ body {
 nav {
   display: flex;
   margin: 1em;
-  font-family: arial;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  padding: 0.5rem calc((100vw - 1200px) / 2);
+  z-index: 10;
+  position: relative;
 
   div.logo-container {
     img {

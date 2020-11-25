@@ -1,3 +1,11 @@
+// * {
+//   box-sizing: border-box;
+//   margin: 0;
+//   padding: 5px;
+//   font-family: "M PLUS Rounded 1c", sans-serif;
+//   font-size: 20px;
+// }
+
 #outerDiv2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -17,7 +25,7 @@
   // padding-left: 50px;
 }
 img {
-  //width: 300px;
+  // width: 300px;
   //   height: 200px;
   padding-right: 40px;
 }

@@ -1,11 +1,25 @@
+// * {
+//   box-sizing: border-box;
+//   margin: 0;
+//   padding: 0;
+//   font-family: "M PLUS Rounded 1c", sans-serif;
+//   font-size: 20px;
+// }
+
+$form: #ebe8c2;
+// $nav: ;
+
 .login-body {
   display: grid;
   grid-template-columns: 1fr min-content 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas: ". . .";
+  padding: 0.5rem calc((100vw - 1200px) / 2);
+
 }
 #login-box {
+  box-sizing: border-box;
   width: 500px;
   height: 480px;
   border-radius: 8px;
@@ -16,7 +30,13 @@
   transform: translateY(-50%);
   background-color: #ebe8c2;
   padding: 30px;
+  
 }
+
+.req {
+  color:red;
+}
+
 input {
   width: 300px;
   height: 30px;
